@@ -77,7 +77,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.745283, g: 0.3466796, b: 0.12304199, a: 1}
   m_FlipX: 0
@@ -147,8 +147,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a131f55a4f7b464f94462bea698b567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  choicePanel: {fileID: 5989658725740311386, guid: 2506dbf822213134ba484587a03b144d, type: 3}
-  choiceButtons:
-  - {fileID: 8530268256255876044, guid: d92c504cb4ae0f1428ef930f68d1e0d2, type: 3}
-  - {fileID: 1855384959457541181, guid: 7ce62ca9456e32b47b7e0a5a68096cc8, type: 3}
-  - {fileID: 4642198034579551798, guid: 13a02b14634066c409279892f813ac94, type: 3}
