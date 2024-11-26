@@ -29,7 +29,7 @@ public class PlayerScript : MonoBehaviour
 
     [Header("====>체력<====")]
     public float maxHealth = 100f;
-    private float currentHealth;
+    public float currentHealth;
 
     public int level = 1;
     public int currentExp = 0;

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class EnemySpawnerCode : MonoBehaviour
 {
-
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private float initialSpawnInterval = 10f; // 초기 스폰 간격
     [SerializeField] private float minSpawnInterval = 1f;      // 최소 스폰 간격
@@ -17,21 +16,14 @@ public class EnemySpawnerCode : MonoBehaviour
 
     void Start()
     {
-
         mainCamera = Camera.main;
         currentSpawnInterval = initialSpawnInterval;
         timer = currentSpawnInterval;
         gameTimer = 0f;
-
     }
-
-
-
-
 
     void Update()
     {
-
         gameTimer += Time.deltaTime;
         
         // 스폰 간격 감소
@@ -46,16 +38,10 @@ public class EnemySpawnerCode : MonoBehaviour
             SpawnEnemy();
             timer = currentSpawnInterval;
         }
-
     }
-
-
-
-
 
     private void SpawnEnemy()
     {
-
         // 현재 씬의 적 개수 확인
         int currentEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
         
@@ -78,7 +64,5 @@ public class EnemySpawnerCode : MonoBehaviour
 
             Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         }
-
     }
-    
 }
