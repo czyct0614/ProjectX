@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -33,6 +34,10 @@ public class PlayerScript : MonoBehaviour
     public int level = 1;
     public int currentExp = 0;
     public int expToNextLevel = 10;
+
+    [Header("====>레벨업<====")]
+    public GameObject levelUpPanel;        // 레벨업 UI 패널
+    public Button[] upgradeButtons;        // 업그레이드 선택 버튼들
 
     void Start()
     {
@@ -149,6 +154,7 @@ public class PlayerScript : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        Debug.Log(currentHealth);
         if (currentHealth <= 0)
         {
             Die();
@@ -196,10 +202,68 @@ public class PlayerScript : MonoBehaviour
     {
         level++;
         currentExp -= expToNextLevel;
-        expToNextLevel = (int)(expToNextLevel * 1.2f); // 다음 레벨업에 필요한 경험치 20% 증가
+        expToNextLevel = (int)(expToNextLevel * 1.2f);
         Debug.Log($"레벨 업! 현재 레벨: {level}");
         
-        // 여기에 레벨업 시 추가할 효과를 구현하세요
+        // 게임 일시정지
+        Time.timeScale = 0f;
+        
+        // 레벨업 패널을 카메라 위치로 이동
+        Vector3 cameraPosition = Camera.main.transform.position;
+        levelUpPanel.transform.position = new Vector3(cameraPosition.x, cameraPosition.y, 0);
+        
+        // 레벨업 패널 활성화
+        levelUpPanel.SetActive(true);
+        
+        // 랜덤한 업그레이드 옵션 생성 및 버튼에 할당
+        SetupUpgradeOptions();
+    }
+
+    private void SetupUpgradeOptions()
+    {
+        // 예시 업그레이드 옵션들
+        UpgradeOption[] possibleUpgrades = new UpgradeOption[]
+        {
+            new UpgradeOption("공격력 증가", () => attackRate *= 0.9f),
+            new UpgradeOption("이동속도 증가", () => moveSpeed *= 1.1f),
+            new UpgradeOption("최대체력 증가", () => maxHealth *= 1.1f)
+        };
+        
+        // 각 버튼에 랜덤한 업그레이드 할당
+        for (int i = 0; i < upgradeButtons.Length; i++)
+        {
+            int optionIndex = Random.Range(0, possibleUpgrades.Length);
+            UpgradeOption upgrade = possibleUpgrades[optionIndex];
+            
+            // TextMeshProUGUI 컴포넌트 사용으로 수정
+            upgradeButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = upgrade.name;
+            
+            // 버튼 클릭 이벤트 설정
+            upgradeButtons[i].onClick.RemoveAllListeners();
+            upgradeButtons[i].onClick.AddListener(() => {
+                upgrade.Apply();
+                ResumeGame();
+            });
+        }
+    }
+
+    private void ResumeGame()
+    {
+        levelUpPanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    // 업그레이드 옵션을 저장할 클래스
+    private class UpgradeOption
+    {
+        public string name;
+        public System.Action Apply;
+        
+        public UpgradeOption(string name, System.Action apply)
+        {
+            this.name = name;
+            this.Apply = apply;
+        }
     }
 
 }

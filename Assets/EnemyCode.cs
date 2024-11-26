@@ -10,11 +10,16 @@ public class EnemyCode : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
 
-    public float maxHealth = 50f;
+    public float maxHealth = 10f;
     private float currentHealth;
 
     [SerializeField] private GameObject expOrbPrefab; // 경험치 구슬 프리팹
     [SerializeField] private int expAmount = 10; // 적이 주는 경험치량
+
+    [Header("공격")]
+    [SerializeField] private float attackDamage = 10f;    // 공격력
+    [SerializeField] private float attackCooldown = 1f;   // 공격 쿨타임
+    private float nextAttackTime = 0f;                    // 다음 공격 가능 시간
 
     void Start()
     {
@@ -82,5 +87,18 @@ public class EnemyCode : MonoBehaviour
             expOrb.GetComponent<ExpOrbCode>().SetExpAmount(expAmount);
         }
         Destroy(gameObject);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && Time.time >= nextAttackTime)
+        {
+            PlayerScript player = collision.gameObject.GetComponent<PlayerScript>();
+            if (player != null)
+            {
+                player.TakeDamage(attackDamage);
+                nextAttackTime = Time.time + attackCooldown;
+            }
+        }
     }
 }
